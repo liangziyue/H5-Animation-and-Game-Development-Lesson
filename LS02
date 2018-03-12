@@ -1,1 +1,319 @@
+//路径绘制
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript">
+        window.onload = function () {
+          canvasApp();
+        }
+        function canvasApp() {
+          var theCanvas = document.getElementById('canvas');
+          var context = theCanvas.getContext('2d');
+          //画一条直线
+          context.moveTo(100,100);  //起始点
+          context.lineTo(200,200);  //结束点
+          context.lineWidth = 10;  //线宽
+          context.strokeStyle = "#ccc";  //颜色
+          context.stroke();  //绘制
+         //画一条弧
+         context.arc(100, 100, 50, Math.PI , Math.PI *1.5); //左上四分之一圆弧
+         context.stroke(); 
+         //画一条二次曲线
+         context.moveTo(0,10); //起始点
+         context.quadraticCurveTo(100,125,0,50);
+         context.stroke(); 
+         //画一条贝赛尔曲线
+         context.moveTo(0,10); //起始点
+         context.bezierCurveTo(0,110,300,210,150,310); 
+         context.stroke();  
+        }      
+</script>
+</head>
+<body>
+    <canvas id="canvas" width="500" height="500" style="border:2px #ccc solid">
+            Your browser does not support the HTML 5 Canvas.
+    </canvas>
+</body>
+</html>
+//基本形状(需要引入js文件)
 
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script>
+        window.addEventListener('load', eventWindowLoaded, false);
+        function eventWindowLoaded() {
+            canvasApp();
+        }
+        function canvasApp() {
+            var theCanvas = document.getElementById('canvas');
+            var context = theCanvas.getContext('2d');
+            drawRect(context);  //长方形
+            drawEllipse(context); //椭圆
+            drawTriangle(context);  //三角形
+        }
+        //长方形函数
+        function drawRect(ctx) {
+            ctx.fillStyle = '#000000';//填充颜色
+            ctx.strokeStyle = '#00ffff';//描边颜色
+            ctx.lineWidth = 5;//线宽
+            ctx.beginPath();
+            ctx.rect(0, 0, 80, 120);
+            ctx.stroke();
+        }
+        //椭圆函数
+        function drawEllipse(ctx) {
+            ctx.strokeStyle = 'red';
+            ctx.lineWidth = 10;
+            ctx.beginPath();
+            ctx.ellipse(100, 100, 50, 75, Math.PI/4, Math.PI/2, 2 * Math.PI,false); 
+            ctx.stroke();
+        }
+        //三角形函数
+        function drawTriangle(ctx) {
+            ctx.triangle(10,210,100,200,10,300);
+            ctx.stroke();
+        }
+      
+//线性渐变和径向渐变填充
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript">
+        window.onload = function () {
+            canvasApp();
+        }
+        function canvasApp() {
+            var theCanvas = document.getElementById('canvas');
+            var context = theCanvas.getContext('2d');   
+            linearGradient(); //线性渐变
+            radialGradient(); //径向渐变
+            //线性渐变函数（长方形）
+            function linearGradient() {
+                var gr = context.createLinearGradient(200, 250, 300, 250);
+                context.lineWidth = 5;
+                gr.addColorStop(0, 'rgb(255,0,0)');
+                gr.addColorStop(0.5, 'rgb(0,255,0)');
+                gr.addColorStop(1, 'rgb(255,0,0)');
+                context.strokeStyle = gr;
+                context.strokeRect(200, 200, 100, 100);
+            }
+            //径向渐变函数（圆）
+            function radialGradient() {
+                var gr = context.createRadialGradient(50, 50, 25, 100, 100, 100);
+                gr.addColorStop(0, 'rgb(255,0,0)');
+                gr.addColorStop(0.5, 'rgb(0,255,0)');
+                gr.addColorStop(1, 'rgb(255,0,0)');
+                context.fillStyle = gr;
+                context.arc(100, 100, 100, (Math.PI / 180) * 0, (Math.PI / 180) * 360, false);
+                context.fill();
+                context.stroke();
+            }
+        }
+</script>
+</head>
+<body>
+    <canvas id="canvas" width="500" height="500" style="border:2px #ccc solid">
+            Your browser does not support the HTML 5 Canvas.
+    </canvas>
+</body>
+</html>      
+//阴影设置
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript">
+        window.onload = function () {
+            canvasApp();
+        }
+        function canvasApp() {
+            var theCanvas = document.getElementById('canvas');
+            var context = theCanvas.getContext('2d');   
+            context.fillStyle = 'red'; 
+            context.shadowOffsetX = 4; //横向阴影
+            context.shadowOffsetY = 4; //纵向阴影
+            context.shadowColor = 'black'; //阴影颜色
+            context.shadowBlur = 4; //阴影模糊程度
+            context.fillRect(10, 10, 100, 100);
+        }
+</script>
+</head>
+<body>
+    <canvas id="canvas" width="500" height="500" style="border:2px #ccc solid">
+            Your browser does not support the HTML 5 Canvas.
+    </canvas>
+</body>
+</html>
+//坐标系变换
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript">
+        window.onload = function () {
+            canvasApp();
+        }
+        function canvasApp() {
+            var theCanvas = document.getElementById('canvas');
+            var context = theCanvas.getContext('2d'); 
+            //平移
+            context.fillStyle = "green";
+            context.translate(50, 50);
+            context.fillRect(0, 0, 50, 50);
+            context.restore();
+            //旋转
+            var angleInRadians = 45 * Math.PI / 180;
+            context.rotate(angleInRadians);
+            context.fillStyle = "red";
+            context.fillRect(100, 100, 50, 50);
+            context.restore();
+            //缩放
+            context.scale(0.5,1);
+            context.fillStyle = "yellow";
+            context.fillRect(150, 150, 50, 50);
+            context.restore();
+            //坐标系变换
+            context.transform(1,0,0,1,0,0);//
+            context.transform(1,0,0,1,50,0);//
+            context.transform(1,0,0,1,0,50);//transform方法可以级联
+            context.setTransform(1, 0, 0, 1, 0, 0);//忽略之前的级联变换，以标准矩阵为起始重新变换
+            context.resetTransform();//重置坐标系变换
+        }
+</script>
+</head>
+<body>
+    <canvas id="canvas" width="500" height="500" style="border:2px #ccc solid">
+            Your browser does not support the HTML 5 Canvas
+    </canvas>
+</body>
+</html>
+//canvas文本
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript">
+        window.onload = function () {
+            canvasApp();
+        }
+        function canvasApp() {
+            var theCanvas = document.getElementById('canvas');
+            var context = theCanvas.getContext('2d');
+            context.font = "bold 80px Arial";
+            context.fillStyle = "red";
+            context.strokeStyle='yellow';
+            context.fillText("text", 100, 100); 
+            context.strokeText("text", 100, 100);
+        }
+</script>
+</head>
+<body>
+    <canvas id="canvas" width="500" height="500" style="border:2px #ccc solid">
+            Your browser does not support the HTML 5 Canvas.
+    </canvas>
+</body>
+</html>
+//canvas剪切
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript">
+        window.onload = function () {
+            canvasApp();
+        }
+        function canvasApp() {  
+        window.addEventListener('load', eventWindowLoaded, false);
+        function eventWindowLoaded() {
+            clipTest(200,200,100);
+        }
+        function clipTest(cx,cy,radius) {
+            var theCanvas = document.getElementById('canvas');
+            var ctx = theCanvas.getContext('2d');
+            ctx.save(); 
+            // 绘制第一个圆 
+            ctx.beginPath();
+            ctx.fillStyle = 'red';
+            ctx.arc(cx, cy, radius, 0, Math.PI * 2, false);
+            ctx.fill(); 
+            ctx.clip(); 
+            // 绘制第二个圆 
+            ctx.beginPath(); ctx.fillStyle = 'black';
+            ctx.arc(cx + 100, cy, radius, 0, Math.PI * 2, false);
+            ctx.fill();
+            ctx.clip(); 
+            ctx.restore();
+            // 绘制第三个圆 
+            ctx.beginPath();
+            ctx.fillStyle = 'green';
+            ctx.arc(cx, cy + 100, radius, 0, Math.PI * 2, false);
+            ctx.fill(); 
+            ctx.clip();
+            // 绘制第四个圆 
+            ctx.beginPath();
+            ctx.strokeStyle = '#ccc';
+            ctx.lineWidth = 10;
+            ctx.arc(cx, cy, radius, 0, Math.PI * 2, false);
+            ctx.stroke();
+            ctx.restore();
+        }
+        }
+</script>
+</head>
+<body>
+    <canvas id="canvas" width="500" height="500" style="border:2px #ccc solid">
+            Your browser does not support the HTML 5 Canvas.
+    </canvas>
+</body>
+</html>
+//canvas交互
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript">
+        window.onload = function () {
+            canvasApp();
+        }
+        function canvasApp() {
+            var theCanvas = document.getElementById('canvas');
+            var context = theCanvas.getContext('2d');  
+            context.beginPath();
+            context.strokeStyle='red';
+            context.lineWidth=5;
+            for(var i=0;i<5;i++){
+                context.rect(40*i+10, 30*i+10, 30, 30);
+            }
+            context.moveTo(0, 0+200);
+            context.lineTo(200, 0+200);
+            context.lineTo(200, 150+200);
+            context.closePath();
+            context.stroke();
+            theCanvas.onmouseup = function (e) {
+                //鼠标点击的位置，注意坐标补偿
+                var x = e.clientX - theCanvas.getBoundingClientRect().left;
+                var y = e.clientY - theCanvas.getBoundingClientRect().top;
+                console.log(x,y);
+                // console.log(theCanvas.getBoundingClientRect().left,theCanvas.getBoundingClientRect().top);
+                console.log(context.isPointInPath(x,y),context.isPointInStroke(x, y));
+            } 
+        }
+</script>
+</head>
+<body>
+    <canvas id="canvas" width="500" height="500" style="border:2px #ccc solid">
+            Your browser does not support the HTML 5 Canvas.
+    </canvas>
+</body>
+</html>
